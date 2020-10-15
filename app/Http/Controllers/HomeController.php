@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PublishVerifyEvent;
+use App\Events\PublishVerifiedEvent;
 use App\Post;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +50,7 @@ class HomeController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
+        event(new PublishVerifyEvent());
         return redirect(route('home'));
     }
 
@@ -65,6 +68,8 @@ class HomeController extends Controller
                     ]);
             }
         }
+
+        event(new PublishVerifiedEvent());
         return redirect(route('home'));
     }
 }

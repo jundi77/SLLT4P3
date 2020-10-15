@@ -2,8 +2,10 @@
 
 namespace App\Listeners;
 
+use App\Mail\SendPostPublishedNotice;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class PublishVerifiedListener implements ShouldQueue
 {
@@ -25,6 +27,7 @@ class PublishVerifiedListener implements ShouldQueue
      */
     public function handle($event)
     {
-        //
+        $user_email = [$event->user->email];
+        Mail::to($user_email)->send(new SendPostPublishedNotice());
     }
 }

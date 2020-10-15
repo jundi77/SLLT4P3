@@ -2,10 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Mail\SendPostCreatedNotice;
 use App\Mail\SendPublishRequest;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
+use App\User;
 
 class PublishVerifyListener implements ShouldQueue
 {
@@ -29,6 +31,7 @@ class PublishVerifyListener implements ShouldQueue
     {
         $user_email = [$event->user->email];
         $admin_emails = User::select('email')->where('admin', true)->get();
-        Mail::to($user_email)->send(new SendPublishRequest)
+        Mail::to($admin_emails)->send(new SendPublishRequest());
+        Mail::to($user_email)->send(new SendPostCreatedNotice());
     }
 }
